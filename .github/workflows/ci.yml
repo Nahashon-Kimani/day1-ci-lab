@@ -1,69 +1,27 @@
-#describe to me this file in words
-# This file is a GitHub Actions workflow configuration file named `ci.yml`. 
-# It defines a Continuous Integration (CI) pipeline that runs whenever there is a push or pull request to the `main` branch of the repository. 
-# The workflow consists of a single job called `build-and-test`, which runs on an Ubuntu environment.
-# The job includes several steps:
-# 1. It checks out the code from the repository using the `actions/checkout` action.
-# 2. It sets up Python using the `actions/setup-python` action, specifying that it should use Python version 3.x.
-# 3. It installs the necessary dependencies, in this case, it upgrades pip and installs the `pytest` testing framework.
-# 4. Finally, it runs the tests using the `pytest` command on a file named `test_app.py`.
-
-
-
-# Please check the file and folder structure of the repository is correct?
-# The file structure of the repository appears to be correct based on the provided information.
-# The `ci.yml` file is located in the `.github/workflows/` directory, which is the standard location for GitHub Actions workflow files.
-# The app.py and test_app.py are inside a folder named `day1-ci-lab`, which is a common practice for organizing code and tests in a project. is this correct
-# Yes, it is correct to have the `app.py` and `test_app.py` files inside a folder named `day1-ci-lab`.
-# This structure helps to keep the code organized and makes it easier to manage the files related to
-# the application and its tests.
-
-# Am getting this error on github
-# Run pytest test_app.py
-# ERROR: file or directory not found: test_app.py
-# ============================= test session starts ==============================
-
-# platform linux -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0
-# rootdir: /home/runner/work/day1-ci-lab/day1-ci-lab
-# collected 0 items
-
-# ============================ no tests ran in 0.00s =============================
-# Error: Process completed with exit code 4.
-
-# The error message indicates that the `pytest` command is unable to find the `test_app.py` file in the current working directory.
-# To resolve this issue, you need to ensure that the `test_app.py` file is located in the correct directory where the `pytest` command is being executed.
-# In your workflow, you are running the `pytest` command without specifying the path to the `test_app.py` file. If the `test_app.py` file is located in the `day1-ci-lab` folder, you should update the command to include the path to the file.
-# You can modify the `Run tests` step in your `ci.yml` file as follows:
-# - name: Run tests
-#   run: |
-#     pytest day1-ci-lab/test_app.py
-
-
-
 name: CI Pipeline
 on:
   push:
-    branches: [ main ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ main ]
+    branches: [ "main" ]
+
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.x'
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
 
+    - name: Install dependencies
+      run: |
+        pip install pytest
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install pytest
-      - name: Run tests
-        run: |
-          pytest test_app.py
+    - name: Run tests
+      run: |
+        pytest
