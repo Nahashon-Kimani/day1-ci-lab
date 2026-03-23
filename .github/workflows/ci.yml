@@ -1,0 +1,40 @@
+#describe to me this file in words
+# This file is a GitHub Actions workflow configuration file named `ci.yml`. 
+# It defines a Continuous Integration (CI) pipeline that runs whenever there is a push or pull request to the `main` branch of the repository. 
+# The workflow consists of a single job called `build-and-test`, which runs on an Ubuntu environment.
+# The job includes several steps:
+# 1. It checks out the code from the repository using the `actions/checkout` action.
+# 2. It sets up Python using the `actions/setup-python` action, specifying that it should use Python version 3.x.
+# 3. It installs the necessary dependencies, in this case, it upgrades pip and installs the `pytest` testing framework.
+# 4. Finally, it runs the tests using the `pytest` command on a file named `test_app.py`.
+
+
+
+
+name: CI Pipeline
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest
+      - name: Run tests
+        run: |
+          pytest test_app.py
